@@ -2,16 +2,15 @@ import express from 'express'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 import schema from './modules/rootSchema'
-import {
-  graphqlExpress,
-  graphiqlExpress
-} from 'graphql-server-express'
+import { graphqlExpress } from 'graphql-server-express'
 import {
   NODE_PORT,
   DB_HOST,
   DB_PORT,
   DB_NAME
 } from './config'
+
+const expressPlayground = require('graphql-playground-middleware-express').default
 
 const server = express()
 
@@ -21,7 +20,7 @@ server.get('/', (req, res) => {
 
 server.use('/graphql', bodyParser.json(), graphqlExpress(req => ({ schema })))
 
-server.use('/graphiql', graphiqlExpress({
+server.use('/playground', expressPlayground({
   endpointURL: '/graphql'
 }))
 
